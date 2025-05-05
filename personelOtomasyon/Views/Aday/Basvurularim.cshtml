@@ -1,0 +1,96 @@
+﻿@model IEnumerable<personelOtomasyon.Models.Basvuru>
+
+@{
+    ViewData["Title"] = "Başvurularım";
+}
+
+<h2 class="mb-4">Başvurularım</h2>
+<hr />
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        Henüz hiçbir ilana başvurmadınız.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>İlan Başlığı</th>
+                    <th>Kategori</th>
+                    <th>Temel Alan</th>
+                    <th>Başvuru Tarihi</th>
+                    <th>Durum</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var basvuru in Model)
+                {
+                    <tr>
+                        <td>@basvuru.Ilan?.Baslik</td>
+                        <td>@basvuru.Ilan?.Kategori</td>
+                        <td>@basvuru.Ilan?.TemelAlan</td>
+                        <td>@basvuru.BasvuruTarihi.ToShortDateString()</td>
+
+                        <!-- 🧩 DURUM Hesaplama -->
+                        <td>
+                            @{
+                                string durumGosterilecek = basvuru.Durum;
+
+                                if (string.IsNullOrEmpty(basvuru.YoneticiSonucu))
+                                {
+                                    // yönetici sonucu henüz belirlenmediyse başvuru beklemede görünür
+                                    durumGosterilecek = "Beklemede";
+                                }
+                                else if (basvuru.YoneticiSonucu == "Olumsuz")
+                                {
+                                    durumGosterilecek = "Reddedildi";
+                                }
+                                else if (basvuru.YoneticiSonucu == "Olumlu")
+                                {
+
+                                    durumGosterilecek = "Onaylandı";
+                                }
+                            }
+
+                            @if (durumGosterilecek == "Reddedildi")
+                            {
+                                <span class="badge bg-danger">
+                                    <span class="text-white">❌</span> Reddedildi
+                                </span>
+                            }
+                            else if (durumGosterilecek == "Onaylandı")
+                            {
+                                <span class="badge bg-success"> ✅ Onaylandı</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning"> 🕒 Beklemede</span>
+                            }
+                        </td>
+
+
+                        <!-- 🧩 İŞLEMLER -->
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a asp-action="BasvuruDetay" asp-route-id="@basvuru.BasvuruId" class="btn btn-sm btn-outline-primary">
+                                    Detay
+                                </a>
+                                <form asp-action="BasvuruSil" asp-route-id="@basvuru.BasvuruId" method="post" class="d-inline" onsubmit="return confirm('Başvurunuzu silmek istediğinize emin misiniz?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        Sil
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

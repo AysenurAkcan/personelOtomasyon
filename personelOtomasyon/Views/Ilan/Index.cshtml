@@ -1,0 +1,79 @@
+﻿@model IEnumerable<personelOtomasyon.Models.AkademikIlan>
+
+@{
+    ViewData["Title"] = "İlan Listesi";
+}
+
+<h2 class="mb-4">📋 İlan Listesi</h2>
+
+<a class="btn btn-success mb-3" asp-action="Create">➕ Yeni İlan Ekle</a>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>Başlık</th>
+            <th>Kategori</th>
+            <th>Temel Alan</th>
+            <th>Başvuru Tarihleri</th>
+            <th>Yayın Durumu</th>
+            <th style="width: 220px;">İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ilan in Model)
+        {
+            <tr>
+                <td>@ilan.Baslik</td>
+                <td>@ilan.Kategori</td>
+                <td>@ilan.TemelAlan</td>
+                <td>
+                    @ilan.BasvuruBaslangicTarihi.ToShortDateString() -
+                    @ilan.BasvuruBitisTarihi.ToShortDateString()
+                </td>
+                <td class="text-center">
+                    @if (ilan.Yayinda)
+                    {
+                        <span class="badge bg-success">Yayında</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Yayında Değil</span>
+                    }
+                </td>
+                <td>
+                    <div class="d-flex gap-1">
+                        <a class="btn btn-sm btn-warning"
+                           asp-action="Edit"
+                           asp-route-id="@ilan.IlanId">
+                            Düzenle
+                        </a>
+
+                        <a class="btn btn-sm btn-danger"
+                           asp-action="Delete"
+                           asp-route-id="@ilan.IlanId">
+                            Sil
+                        </a>
+
+                        <a class="btn btn-sm btn-outline-primary"
+                           asp-controller="Admin"
+                           asp-action="IlanaJuriAta"
+                           asp-route-ilanId="@ilan.IlanId">
+                            Jüri Ata
+                        </a>
+                    </div>
+                </td>
+            </tr>
+
+            
+        }
+       
+      
+    </tbody>
+
+</table>
+
+<div class="text-end">
+    <a class="btn btn-secondary mt-3" asp-controller="Admin" asp-action="Dashboard">
+        ⬅ Geri Dön
+    </a>
+</div>

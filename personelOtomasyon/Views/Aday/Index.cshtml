@@ -1,0 +1,58 @@
+﻿@model IEnumerable<personelOtomasyon.Models.AkademikIlan>
+
+@{
+    ViewData["Title"] = "Yayındaki İlanlar";
+}
+
+<h2 class="mb-4">📋 Yayındaki İlanlar</h2>
+<hr />
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center">
+        Şu anda yayında olan ilan bulunmamaktadır.
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var ilan in Model)
+        {
+            <div class="col d-flex flex-column">
+                <div class="card h-100 flex-fill d-flex flex-column shadow-sm">
+                    <div class="card-body d-flex flex-column">
+
+                        <!-- Başlık -->
+                        <h5 class="card-title text-center">@ilan.Baslik</h5>
+                        <hr class="my-2" />
+
+                        <!-- Temel Bilgiler -->
+                        <p class="mb-1"><strong>Temel Alan:</strong> @ilan.TemelAlan</p>
+                        <p class="mb-1"><strong>Kategori:</strong> @ilan.Kategori</p>
+                        <p class="mb-1"><strong>Başvuru Tarihi:</strong> @ilan.BasvuruBaslangicTarihi.ToShortDateString() - @ilan.BasvuruBitisTarihi.ToShortDateString()</p>
+
+                       
+                        <div class="mt-auto text-center">
+                            @if (ViewData["BasvuruDurumu" + ilan.IlanId]?.ToString() == "Başvuruldu")
+                            {
+                                <span class="badge bg-success px-3 py-2">
+                                    ✔ Başvuruldu
+                                </span>
+                            }
+                        </div>
+
+                    </div>
+
+                    <!-- Butonlar Footer -->
+                    <div class="card-footer bg-transparent border-0 d-grid gap-2">
+                        @if (ViewData["BasvuruDurumu" + ilan.IlanId]?.ToString() == "Başvurulmadı")
+                        {
+                            <a class="btn btn-primary" asp-action="Basvur" asp-route-id="@ilan.IlanId">Başvur</a>
+                        }
+                        <a class="btn btn-outline-primary" asp-action="IlanDetay" asp-route-id="@ilan.IlanId">İlan Detayları</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

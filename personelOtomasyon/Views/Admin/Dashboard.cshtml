@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<h2 class="mb-4">👨‍💼 Admin Alanı</h2>
+
+<div class="row g-4">
+
+    <!-- 1. İlan Yönetimi -->
+    <div class="col-md-6">
+        <div class="card border-primary h-100">
+            <div class="card-body">
+                <h5 class="card-title">📋 İlan Yönetimi</h5>
+                <p class="card-text">Mevcut ilanları görüntüle, yeni ilan ekle veya düzenle.</p>
+                <a class="btn btn-primary" asp-controller="Ilan" asp-action="Index">İlanları Yönet</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Başvurular -->
+    <div class="col-md-6">
+        <div class="card border-warning h-100">
+            <div class="card-body">
+                <h5 class="card-title">📂 Başvurular</h5>
+                <p class="card-text">Tüm ilanlara gelen başvuruları görüntüle, gerektiğinde yönlendir.</p>
+                <a class="btn btn-warning text-white" asp-controller="Basvuru" asp-action="Index">Başvuruları Gör</a>
+            </div>
+        </div>
+    </div>
+
+</div>
